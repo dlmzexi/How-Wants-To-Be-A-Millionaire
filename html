@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Who Wants to Be a Millionaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b0c10;
+            color: #fff;
+            text-align: center;
+            padding: 30px;
+        }
+        .question-box {
+            background: #1f2833;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .choices button {
+            display: block;
+            width: 50%;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #45a29e;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .choices button:hover {
+            background-color: #66fcf1;
+            color: #0b0c10;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #66fcf1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Who Wants to Be a Millionaire</h1>
+    <div class="question-box" id="question-box">
+        <h2 id="question">Loading...</h2>
+        <div class="choices" id="choices"></div>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                choices: ["A. Paris", "B. London", "C. Rome", "D. Madrid"],
+                answer: "A"
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                choices: ["A. Vincent Van Gogh", "B. Pablo Picasso", "C. Leonardo da Vinci", "D. Claude Monet"],
+                answer: "C"
+            },
+            {
+                question: "What is the largest planet in our solar system?",
+                choices: ["A. Earth", "B. Jupiter", "C. Saturn", "D. Mars"],
+                answer: "B"
+            },
+            {
+                question: "How many continents are there?",
+                choices: ["A. Five", "B. Six", "C. Seven", "D. Eight"],
+                answer: "C"
+            },
+            {
+                question: "Which language has the most native speakers?",
+                choices: ["A. English", "B. Spanish", "C. Mandarin Chinese", "D. Hindi"],
+                answer: "C"
+            }
+        ];
+
+        const prizes = ["₱1,000", "₱5,000", "₱10,000", "₱50,000", "₱100,000"];
+
+        let currentQuestion = 0;
+
+        function showQuestion() {
+            if (currentQuestion < questions.length) {
+                const q = questions[currentQuestion];
+                document.getElementById('question').textContent = q.question;
+                const choicesDiv = document.getElementById('choices');
+                choicesDiv.innerHTML = '';
+                q.choices.forEach((choice, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = choice;
+                    button.onclick = () => checkAnswer(choice.charAt(0));
+                    choicesDiv.appendChild(button);
+                });
+            } else {
+                document.getElementById('question-box').style.display = "none";
+                document.getElementById('result').textContent = "🎉 Congratulations! You're a Millionaire!";
+            }
+        }
+
+        function checkAnswer(selected) {
+            const correct = questions[currentQuestion].answer;
+            if (selected === correct) {
+                alert(`Correct! You've won ${prizes[currentQuestion]}!`);
+                currentQuestion++;
+                showQuestion();
+            } else {
+                alert(`Wrong! The correct answer was ${correct}. You won ${currentQuestion > 0 ? prizes[currentQuestion-1] : "₱0"}.`);
+                document.getElementById('question-box').style.display = "none";
+                document.getElementById('result').textContent = "Game Over. Thanks for playing!";
+            }
+        }
+
+        // Start the game
+        showQuestion();
+    </script>
+
+</body>
+</html>
